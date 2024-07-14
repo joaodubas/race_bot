@@ -1,4 +1,4 @@
-FROM elixir:1.15-slim AS build
+FROM hexpm/elixir:1.16.3-erlang-26.2.5.1-debian-bookworm-20240701 AS build
 
 ENV MIX_ENV=prod
 
@@ -33,7 +33,7 @@ RUN mix release
 
 # =================================================
 
-FROM debian:12-slim
+FROM debian:bookworm-slim
 
 RUN apt-get update -y && \
     apt-get install -y libstdc++6 openssl libncurses5 locales && \
