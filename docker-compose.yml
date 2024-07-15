@@ -4,13 +4,13 @@ services:
         build:
             context: "."
         image: "ghcr.io/recursivegecko/race_bot:master"
+        env_file: .env
         environment:
             - DATABASE_PATH=/data/f1bot.db
             - PHX_SERVER="true"
             - PORT=4000
         ports:
             - "4000:4000"
-        env_file: .env
         restart: unless-stopped
         container_name: "f1bot"
         volumes:
