@@ -1,14 +1,14 @@
 FROM hexpm/elixir:1.16.3-erlang-26.2.5.1-debian-bookworm-20240701 AS build
 
-ENV MIX_ENV=prod
-
 RUN apt-get update && \
     apt-get install -y build-essential git npm && \
-    apt-get clean && rm -f /var/lib/apt/lists/*_*
+    apt-get clean && \
+    rm -f /var/lib/apt/lists/*_*
 
 WORKDIR /app
 
 # Fetch dependencies
+ARG MIX_ENV=prod
 RUN mix local.hex --force && mix local.rebar --force
 COPY mix.exs mix.lock ./
 RUN mix deps.get --only "${MIX_ENV}"
@@ -40,9 +40,8 @@ RUN apt-get update -y && \
     apt-get clean && \
     rm -f /var/lib/apt/lists/*_*
 
-ENV MIX_ENV=prod
-
-RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
@@ -52,6 +51,7 @@ RUN useradd --create-home --uid 1000 app
 WORKDIR /app
 RUN chown app /app
 
+ARG MIX_ENV=prod
 COPY --from=build --chown=app:root /app/_build/${MIX_ENV}/rel/f1bot /app/
 COPY entrypoint.sh scripts LICENSE.md /app/
 
