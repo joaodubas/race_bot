@@ -1,8 +1,9 @@
+---
 services:
     f1bot:
         build:
             context: "."
-        image: ghcr.io/recursivegecko/race_bot:master
+        image: "ghcr.io/recursivegecko/race_bot:master"
         environment:
             - DATABASE_PATH=/data/f1bot.db
             - PHX_SERVER="true"
@@ -13,6 +14,6 @@ services:
         restart: unless-stopped
         container_name: "f1bot"
         volumes:
-            - data:/data
+            - "data:/data"
 volumes:
-    data:
+    data: {}
